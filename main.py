@@ -3,13 +3,27 @@
 
 from random import getrandbits
 
-def itens_na_mochila(tamanho):
-    return [ getrandbits(1) for x in range(tamanho) ]
+def itens_na_mochila_fitness(itens_mochila):
+    individuo = []
+    valor = 0
+    peso = 0
+    for c in itens_mochila:
+        bit = getrandbits(1)
+        individuo.append(bit)
+        if bit == 1:
+            valor += c['valor']
+            peso += c['peso']
 
-def popula(itens_mochila, n_cromossomos):
+    return {
+        'individuo': individuo,
+        'valor': valor,
+        'peso': peso
+    }
+
+def popula_calcula_fitness(itens_mochila, n_cromossomos):
     populacao = []
     for n in range(n_cromossomos):
-        populacao.append(itens_na_mochila(len(itens_mochila)))
+        populacao.append(itens_na_mochila_fitness(itens_mochila))
 
     print(populacao)
 
@@ -32,8 +46,7 @@ def calcula_fitness():
 
 def inicia_AG(n_geracoes, itens_mochila, n_cromossomos):
 
-    populacao = popula(itens_mochila, n_cromossomos)
-    print(len(itens_mochila))
+    populacao = popula_calcula_fitness(itens_mochila, n_cromossomos)
  ##   for x in range(n_geracoes):
  ##       for i in itens_mochila:
  ##           print(i["valor"])
@@ -44,16 +57,16 @@ if __name__ == '__main__':
     n_geracoes = 50
     n_cromossomos = 50
     itens_mochila = [
-    {"valor": 50, "peso": 30},
-    {"valor": 70, "peso": 20},
-    {"valor": 40, "peso": 15},
-    {"valor": 90, "peso": 10},
-    {"valor": 60, "peso": 25},
-    {"valor": 20, "peso": 5},
-    {"valor": 85, "peso": 40},
-    {"valor": 30, "peso": 12},
-    {"valor": 55, "peso": 18},
-    {"valor": 75, "peso": 8}]
+    {'valor': 50, 'peso': 30},
+    {'valor': 70, 'peso': 20},
+    {'valor': 40, 'peso': 15},
+    {'valor': 90, 'peso': 10},
+    {'valor': 60, 'peso': 25},
+    {'valor': 20, 'peso': 5},
+    {'valor': 85, 'peso': 40},
+    {'valor': 30, 'peso': 12},
+    {'valor': 55, 'peso': 18},
+    {'valor': 75, 'peso': 8}]
 
     inicia_AG(n_geracoes, itens_mochila, n_cromossomos)
 
