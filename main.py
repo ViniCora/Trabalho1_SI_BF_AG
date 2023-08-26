@@ -20,12 +20,15 @@ def itens_na_mochila_fitness(itens_mochila):
         'peso': peso
     }
 
+def organiza_peso_valores(populacao):
+    return sorted(populacao, key=lambda item: (item['valor'], item['peso']), reverse=True)
+
 def popula_calcula_fitness(itens_mochila, n_cromossomos):
     populacao = []
     for n in range(n_cromossomos):
         populacao.append(itens_na_mochila_fitness(itens_mochila))
 
-    populacao = sorted(populacao, key=lambda item: (item['valor'], item['peso']), reverse=True)
+    populacao = organiza_peso_valores(populacao)
     print(populacao)
 
     return populacao
@@ -86,7 +89,9 @@ def evolucao(populacao, itens_mochila, n_cromossomos, n_geracoes):
             individuo1 = seleciona(itens_roleta).copy()
             individuo2 = seleciona(itens_roleta).copy()
             novos_individuos.append(calcula_novo_fitness(cruzamento(individuo1, individuo2), itens_mochila))
-        print(novos_individuos)
+        populacao= populacao + novos_individuos
+        populacao = organiza_peso_valores(populacao)
+        populacao = populacao[:n_cromossomos]
 
 
 
