@@ -21,7 +21,7 @@ def itens_na_mochila_fitness(itens_mochila):
     }
 
 def organiza_peso_valores(populacao):
-    return sorted(populacao, key=lambda item: (item['valor'], item['peso']), reverse=True)
+    return sorted(populacao, key=lambda item: (item['peso'], item['valor']), reverse=True)
 
 def popula_calcula_fitness(itens_mochila, n_cromossomos):
     populacao = []
@@ -29,7 +29,6 @@ def popula_calcula_fitness(itens_mochila, n_cromossomos):
         populacao.append(itens_na_mochila_fitness(itens_mochila))
 
     populacao = organiza_peso_valores(populacao)
-    print(populacao)
 
     return populacao
 
@@ -94,20 +93,19 @@ def evolucao(populacao, itens_mochila, n_cromossomos, n_geracoes):
         populacao = populacao[:n_cromossomos]
 
 
-
     return
 
 def inicia_AG(n_geracoes, itens_mochila, n_cromossomos):
 
     populacao = popula_calcula_fitness(itens_mochila, n_cromossomos)
     evolucao(populacao, itens_mochila, n_cromossomos, n_geracoes)
-
+    print(populacao)
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     W = 100
-    n_geracoes = 50
-    n_cromossomos = 50
+    n_geracoes = 500
+    n_cromossomos = 200
     itens_mochila = [
     {'valor': 50, 'peso': 30},
     {'valor': 70, 'peso': 20},
