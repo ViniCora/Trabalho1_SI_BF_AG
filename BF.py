@@ -46,13 +46,16 @@ def seleciona_vizinho(item, itens_mochila, peso_max):
     else:
       novo_item['individuo'][i] = 0
 
+    novo_item['individuo_pai'] = item['individuo']
+
     return reavalia_valores_pesos(novo_item, itens_mochila, peso_max)
 
 def tempera_simulada(itens_pesquisa, itens_mochila, peso_max, k):
-  temperatura = 100000
+  temperatura = randint(500, 5000)
   multiplicador_temperatura = 0.98
   solucoes_atuais = []
-  while temperatura > 0.1:
+  print("Itens Iniciais: ", itens_pesquisa)
+  while temperatura > 0.05:
     solucoes_atuais.clear()
     for item in itens_pesquisa:
       for repeticoes in range(k):
@@ -63,7 +66,7 @@ def tempera_simulada(itens_pesquisa, itens_mochila, peso_max, k):
           else:
             delta_porcentagem = delta / temperatura
             #print("Delta Porcentagem: ", delta_porcentagem)
-            porcentagem_aceitar = math.e ** delta_porcentagem
+            porcentagem_aceitar = (math.e ** delta_porcentagem)
             #print("Porcentagem Aceitar: ", porcentagem_aceitar)
             porcentagem_randomica = random()
             #print("Porcentagem Random: ", porcentagem_randomica)
@@ -72,9 +75,7 @@ def tempera_simulada(itens_pesquisa, itens_mochila, peso_max, k):
     itens_totais = itens_pesquisa + solucoes_atuais
     itens_totais = organiza_peso_valores(itens_totais)
     itens_pesquisa = itens_totais[:k]
-    print(itens_pesquisa)
     temperatura *= multiplicador_temperatura
-    print(temperatura)
 
   return itens_pesquisa
 
@@ -88,7 +89,7 @@ def inicia_busca_em_feixe(quantidade_feixes, itens_mochila, peso_max):
   print(melhores_solucoes)
 
 def main():
-  quantidade_feixes = 10
+  quantidade_feixes = randint(10, 100)
   peso_max = 100
   itens_mochila = [
     {"valor": 50, "peso": 30},

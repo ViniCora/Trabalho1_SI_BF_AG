@@ -32,10 +32,6 @@ def popula_calcula_fitness(itens_mochila, n_cromossomos):
 
     return populacao
 
-def avalia():
-    ##Função para avaliar parada do programa
-    return
-
 def seleciona(itens_mochila):
     ##roleta
     valor_total = sum(item['valor'] for item in itens_mochila)
@@ -104,8 +100,8 @@ def inicia_AG(n_geracoes, itens_mochila, n_cromossomos):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     W = 100
-    n_geracoes = 500
-    n_cromossomos = 200
+    n_geracoes = randint(50, 500)
+    n_cromossomos = randint(10, 200)
     itens_mochila = [
     {'valor': 50, 'peso': 30},
     {'valor': 70, 'peso': 20},
