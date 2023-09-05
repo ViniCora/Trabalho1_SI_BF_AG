@@ -21,7 +21,7 @@ def itens_na_mochila_fitness(itens_mochila):
     }
 
 def organiza_peso_valores(populacao):
-    return sorted(populacao, key=lambda item: (item['peso'], item['valor']), reverse=True)
+    return sorted(populacao, key=lambda item: (item['valor'], item['peso']), reverse=True)
 
 def popula_calcula_fitness(itens_mochila, n_cromossomos):
     populacao = []
@@ -31,6 +31,10 @@ def popula_calcula_fitness(itens_mochila, n_cromossomos):
     populacao = organiza_peso_valores(populacao)
 
     return populacao
+
+def avalia():
+    ##Função para avaliar parada do programa
+    return
 
 def seleciona(itens_mochila):
     ##roleta
@@ -73,35 +77,42 @@ def calcula_novo_fitness(novo_individuo, itens_mochila):
         'peso': peso
     }
 
-def evolucao(populacao, itens_mochila, n_cromossomos, n_geracoes):
+def evolucao(populacao, itens_mochila, n_cromossomos, n_geracoes, peso_maximo):
 
     ##Fazer uma copia para sempre ter remoção desse item
     iteracoes = n_cromossomos//2
+    historico_melhores = []
     for i in range(n_geracoes):
-        itens_roleta = populacao.copy()
         novos_individuos = []
-        for j in range(iteracoes):
+        while len(novos_individuos) < n_cromossomos:
+            itens_roleta = populacao.copy()
             individuo1 = seleciona(itens_roleta).copy()
             individuo2 = seleciona(itens_roleta).copy()
-            novos_individuos.append(calcula_novo_fitness(cruzamento(individuo1, individuo2), itens_mochila))
-        populacao= populacao + novos_individuos
+            novo_objeto = calcula_novo_fitness(cruzamento(individuo1, individuo2), itens_mochila)
+            if(novo_objeto['peso'] <= peso_maximo):
+                novos_individuos.append(novo_objeto)
+
+        populacao= novos_individuos
         populacao = organiza_peso_valores(populacao)
         populacao = populacao[:n_cromossomos]
 
+        historico_melhores.append(populacao[0])
 
-    return
+    print(historico_melhores)
 
-def inicia_AG(n_geracoes, itens_mochila, n_cromossomos):
+    return populacao
+
+def inicia_AG(n_geracoes, itens_mochila, n_cromossomos, peso_maximo):
 
     populacao = popula_calcula_fitness(itens_mochila, n_cromossomos)
-    evolucao(populacao, itens_mochila, n_cromossomos, n_geracoes)
-    print(populacao)
+    pop_final = evolucao(populacao, itens_mochila, n_cromossomos, n_geracoes, peso_maximo)
+    print(pop_final)
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     W = 100
-    n_geracoes = randint(50, 500)
-    n_cromossomos = randint(10, 200)
+    n_geracoes = 200
+    n_cromossomos = 100
     itens_mochila = [
     {'valor': 50, 'peso': 30},
     {'valor': 70, 'peso': 20},
@@ -114,5 +125,5 @@ if __name__ == '__main__':
     {'valor': 55, 'peso': 18},
     {'valor': 75, 'peso': 8}]
 
-    inicia_AG(n_geracoes, itens_mochila, n_cromossomos)
+    inicia_AG(n_geracoes, itens_mochila, n_cromossomos, W)
 
