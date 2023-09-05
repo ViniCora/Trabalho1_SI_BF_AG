@@ -2,6 +2,7 @@
 
 
 from random import getrandbits, random, randint, choices
+import time
 
 def itens_na_mochila_fitness(itens_mochila):
     individuo = []
@@ -91,28 +92,27 @@ def evolucao(populacao, itens_mochila, n_cromossomos, n_geracoes, peso_maximo):
             novo_objeto = calcula_novo_fitness(cruzamento(individuo1, individuo2), itens_mochila)
             if(novo_objeto['peso'] <= peso_maximo):
                 novos_individuos.append(novo_objeto)
-
         populacao= novos_individuos
         populacao = organiza_peso_valores(populacao)
         populacao = populacao[:n_cromossomos]
+        novos_individuos.clear()
 
         historico_melhores.append(populacao[0])
-
-    print(historico_melhores)
 
     return populacao
 
 def inicia_AG(n_geracoes, itens_mochila, n_cromossomos, peso_maximo):
 
     populacao = popula_calcula_fitness(itens_mochila, n_cromossomos)
+    print("População inicial:", populacao)
     pop_final = evolucao(populacao, itens_mochila, n_cromossomos, n_geracoes, peso_maximo)
-    print(pop_final)
+    print("Melhor Solução:", pop_final[0])
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     W = 100
-    n_geracoes = 200
-    n_cromossomos = 100
+    n_geracoes = 100
+    n_cromossomos = 20
     itens_mochila = [
     {'valor': 50, 'peso': 30},
     {'valor': 70, 'peso': 20},
@@ -125,5 +125,8 @@ if __name__ == '__main__':
     {'valor': 55, 'peso': 18},
     {'valor': 75, 'peso': 8}]
 
+    inicio = time.time()
     inicia_AG(n_geracoes, itens_mochila, n_cromossomos, W)
+    fim = time.time()
+    print("Tempo de execução: ",fim - inicio)
 

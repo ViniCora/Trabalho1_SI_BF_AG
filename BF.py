@@ -2,6 +2,8 @@ from random import getrandbits, random, randint
 import numpy as np
 import copy
 import math
+import time
+
 def sorteia_item_inicial(itens_mochila, peso_maximo):
   individuo = []
   valor = 0
@@ -50,8 +52,8 @@ def seleciona_vizinho(item, itens_mochila, peso_max):
 
     return reavalia_valores_pesos(novo_item, itens_mochila, peso_max)
 
-def tempera_simulada(itens_pesquisa, itens_mochila, peso_max, k):
-  temperatura = randint(500, 5000)
+def tempera_simulada(itens_pesquisa, itens_mochila, peso_max, k, temperatura_inicial):
+  temperatura = temperatura_inicial
   multiplicador_temperatura = 0.98
   solucoes_atuais = []
   print("Itens Iniciais: ", itens_pesquisa)
@@ -79,17 +81,18 @@ def tempera_simulada(itens_pesquisa, itens_mochila, peso_max, k):
 
   return itens_pesquisa
 
-def inicia_busca_em_feixe(quantidade_feixes, itens_mochila, peso_max):
+def inicia_busca_em_feixe(quantidade_feixes, itens_mochila, peso_max, temperatura):
   itens_pesquisa = []
   for n in range(quantidade_feixes):
     itens_pesquisa.append(sorteia_item_inicial(itens_mochila, peso_max))
 
-  melhores_solucoes = tempera_simulada(itens_pesquisa, itens_mochila, peso_max, quantidade_feixes)
-  print("Melhores Soluções:")
-  print(melhores_solucoes)
+  melhores_solucoes = tempera_simulada(itens_pesquisa, itens_mochila, peso_max, quantidade_feixes, temperatura)
+  print("Melhore Solução:")
+  print(melhores_solucoes[0])
 
 def main():
-  quantidade_feixes = randint(10, 100)
+  temperatura = 1000
+  quantidade_feixes =  50
   peso_max = 100
   itens_mochila = [
     {"valor": 50, "peso": 30},
@@ -103,7 +106,10 @@ def main():
     {"valor": 55, "peso": 18},
     {"valor": 75, "peso": 8}]
 
-  inicia_busca_em_feixe(quantidade_feixes, itens_mochila, peso_max)
+  inicio = time.time()
+  inicia_busca_em_feixe(quantidade_feixes, itens_mochila, peso_max, temperatura)
+  fim = time.time()
+  print("Tempo de execução: ", fim - inicio)
 
 if __name__ == "__main__":
   main()
